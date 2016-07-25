@@ -1,0 +1,1 @@
+Supposed to be a "similar" project as WQ, but implemented with Angular2.
