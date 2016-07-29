@@ -1,0 +1,12 @@
+{
+  "version": "v4",
+  "repo": "borisyankov/DefinitelyTyped",
+  "ref": "master",
+  "path": "typings",
+  "bundle": "typings/tsd.d.ts",
+  "installed": {
+    "googlemaps/google.maps.d.ts": {
+      "commit": "2864d4666436b055aea2e46f53d5ee6bbabcba55"
+    }
+  }
+}
