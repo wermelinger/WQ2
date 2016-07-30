@@ -1,17 +1,69 @@
+<!-- Top: Overview of results -->
 <div class="row">
 	<div class="col-md-6" >
 		<h1>Weather in {{locationName}}  &nbsp;&nbsp; <span [class]="flagIcon"></span></h1>
-		
 	</div>
 	<div class="col-md-6" >
 		<form class="form-inline" >
-            <!--
 			<p class="text-right">
-				<input type="text" class="form-control" id="inputLocation" placeholder="Other Location" ng-model="vm.newLocationName">
-				<button type="submit" class="btn btn-default" ng-click="vm.LoadLocationDataWithLocationName(vm.newLocationName)">Search</button>
+				<input type="text" class="form-control" id="inputLocation" placeholder="Other Location" [(ngModel)]="newLocationName">
+				<button type="submit" class="btn btn-default" [routerLink]="['Location', {name: newLocationName}]">Search</button>
 			</p>
-
-            -->
 		</form>
 	</div>
+</div>
+
+
+<br/>
+
+<!-- Detailed results -->
+<div class="row" *ngIf='currentWeather'>
+	<div class="col-md-3">
+		<div class="row">
+			<div class="col-md-8">Location:</div>
+			<div class="col-md-4">{{currentWeather.name}}</div>
+		</div>
+		<div class="row">
+			<div class="col-md-8">Temperature:</div>
+			<div class="col-md-4">{{currentWeather.weather.temp.toFixed(2)}} °C</div>
+		</div>
+		<div class="row">
+			<div class="col-md-8">Humidity:</div>
+			<div class="col-md-4">{{currentWeather.weather.humidity.toFixed(2)}} %</div>
+		</div>
+		<div class="row">
+			<div class="col-md-8">Pressure:</div>
+			<div class="col-md-4">{{currentWeather.weather.pressure.toFixed(0)}} hPa</div>
+		</div>
+		<div class="row">
+			<div class="col-md-8">Min Temperature:</div>
+			<div class="col-md-4">{{currentWeather.weather.temp_min.toFixed(2)}} °C</div>
+		</div>			
+		<div class="row">
+			<div class="col-md-8">Max Temperature:</div>
+			<div class="col-md-4">{{currentWeather.weather.temp_max.toFixed(2)}} °C</div>
+		</div>				
+	</div>
+	<div class="col-md-3" >
+		<div class="col-md-3"><img [src]="currentWeather.weather.weatherIcon" alt="Description" /></div>
+	</div>
+	<div class="col-md-3" >
+		<!--
+		<collapsible title="Weather in nearby Cities">
+			<ul>
+				<li ng-repeat="weather in vm.currentWeather.nearbyWeather"><a ng-click="vm.LoadLocationDataWithId(weather.id)">{{weather.name}}</a></li>	
+			</ul>
+		</collapsible>
+		-->
+	</div>
+	<div class="col-md-3" >
+		<!--
+		<p>Last lookups</p>
+		<ul>
+			<li ng-repeat="searchname in vm.LastSearchNames() | reverse"><a ng-click="vm.LoadLocationDataWithLocationName(searchname)">{{searchname}}</a>
+				<button type="button" class="btn btn-default btn-xs" ng-click="vm.DeleteFromHistory(searchname)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+			</li>	
+		</ul>
+		-->
+	</div>	
 </div>

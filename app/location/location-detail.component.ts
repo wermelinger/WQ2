@@ -12,6 +12,7 @@ import {OpenWeatherService} from './open-weather.service';
 })
 export class LocationDetailComponent implements OnInit {
     locationName: string;
+    newLocationName: string;
     currentWeather: CurrentWeather;
 
     flagIcon: string;
@@ -23,7 +24,8 @@ export class LocationDetailComponent implements OnInit {
 
     ngOnInit() : void {
         this._openWeatherService.ByLocationName(this.locationName).subscribe(weather => {
-            this.currentWeather = new CurrentWeather(weather);
+            let temp = new CurrentWeather(weather);
+            this.currentWeather = temp;
             this.flagIcon = "flag-icon flag-icon-" + this.currentWeather.country;//weather['sys'].country;
         });
     }    
