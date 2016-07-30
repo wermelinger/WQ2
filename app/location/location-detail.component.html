@@ -57,13 +57,12 @@
 		-->
 	</div>
 	<div class="col-md-3" >
-		<!--
 		<p>Last lookups</p>
 		<ul>
-			<li ng-repeat="searchname in vm.LastSearchNames() | reverse"><a ng-click="vm.LoadLocationDataWithLocationName(searchname)">{{searchname}}</a>
-				<button type="button" class="btn btn-default btn-xs" ng-click="vm.DeleteFromHistory(searchname)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+			<li *ngFor="#searchname of lastSearchNames()">
+				<a [routerLink]="['Location', {name: searchname}]">{{searchname}}</a>
+				<button type="button" class="btn btn-default btn-xs" (click)="deleteFromHistory(searchname)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
 			</li>	
 		</ul>
-		-->
 	</div>	
 </div>

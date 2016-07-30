@@ -6,6 +6,7 @@ import {OpenWeatherService} from './location/open-weather.service';
 import {WelcomeComponent} from './home/welcome.component'
 import {LocationSearchComponent} from './location/location-search.component';
 import {LocationDetailComponent} from './location/location-detail.component';
+import {SearchHistoryService} from './location/search-history.service';
 import {HTTP_PROVIDERS} from 'angular2/http';
 import 'rxjs/Rx'; // only load library
 import {ROUTER_PROVIDERS, RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
@@ -28,7 +29,7 @@ import {ROUTER_PROVIDERS, RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router'
 
     </div>`,
     directives: [  ROUTER_DIRECTIVES ],
-    providers: [ ProductDataService, OpenWeatherService, HTTP_PROVIDERS, ROUTER_PROVIDERS ]
+    providers: [ ProductDataService, OpenWeatherService, HTTP_PROVIDERS, ROUTER_PROVIDERS, SearchHistoryService ]
 })
 @RouteConfig([
     { path: '/welcome', name: 'Welcome', component: WelcomeComponent, useAsDefault: true },
