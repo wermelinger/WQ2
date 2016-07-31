@@ -20,6 +20,7 @@ import {ROUTER_PROVIDERS, RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router'
                 <ul class='nav navbar-nav'>
                     <li><a [routerLink]="['Welcome']">Home</a></li>
                     <li><a [routerLink]="['Products']">Product list</a></li>
+                    <li><a [routerLink]="['Search']">Search location</a></li>
                 </ul>
             </div>
         </nav>

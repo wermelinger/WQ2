@@ -19,17 +19,15 @@ export class LocationDetailComponent implements OnInit {
     flagIcon: string;
 
     constructor(private _routeParams: RouteParams,
+                private _router: Router,
                 private _openWeatherService: OpenWeatherService,
                 private _searchHistory: SearchHistoryService) {
         this.locationName = this._routeParams.get('name');
-        this._searchHistory.AddSearch(this.locationName);
     }
 
     ngOnInit() : void {
         this._openWeatherService.ByLocationName(this.locationName).subscribe(weather => {
-            let temp = new CurrentWeather(weather);
-            this.currentWeather = temp;
-            this.flagIcon = "flag-icon flag-icon-" + this.currentWeather.country;//weather['sys'].country;
+            this.loadCurrentWeather(weather);
         });
     }    
 
@@ -39,5 +37,26 @@ export class LocationDetailComponent implements OnInit {
 
     deleteFromHistory(name: string): void {
         this._searchHistory.Delete(name);
+    }
+
+    loadLocationDataWithId(id: number): void {
+        this._openWeatherService.ById(id).subscribe(weather => {
+            this.loadCurrentWeather(weather);
+        });
+    }
+
+    loadCurrentWeather(weather: any): void {
+            let temp = new CurrentWeather(weather);
+            this.currentWeather = temp;
+            this.flagIcon = "flag-icon flag-icon-" + this.currentWeather.country;//weather['sys'].country;
+
+            // Get weather nearby
+            this._openWeatherService.ByCoordinatesAround(this.currentWeather.latitude, this.currentWeather.longitude).subscribe(nearby => {
+                var nearbyWeathers = nearby.list;  
+                for(let nearbyWeather of nearbyWeathers) {
+                    var weatherObj = new CurrentWeather(nearbyWeather);
+                    this.currentWeather.nearbyWeather.push(weatherObj);                     
+                };                  
+            });           
     }
 }

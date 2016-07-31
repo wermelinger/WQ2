@@ -25,6 +25,10 @@ export class SearchHistoryService {
 		 * Adds a search-name to the history.
 		 */
 		AddSearch(name : string) : void {
+			if (name == null) {
+				return;
+			}
+
 			var searchHistory = this.GetSearchHistory();
 			this.DeleteItem(name, searchHistory);
 			searchHistory.push(name);
