@@ -49,12 +49,13 @@
 	</div>
 	<div class="col-md-3" style="background: #DDDDDD" >
 		<!-- TODO implement directive collapsable -->
-
+		<collapsible title="This is my directive">
 			<ul>
 				<li *ngFor="#weather of currentWeather.nearbyWeather">
 					<a (click)="loadLocationDataWithId(weather.id)">{{weather.name}}</a>
 				</li>	
 			</ul>
+		</collapsible>
 	</div>
 	<div class="col-md-3" >
 		<p>Last lookups</p>

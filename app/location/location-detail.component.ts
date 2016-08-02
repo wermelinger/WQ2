@@ -6,10 +6,11 @@ import {CurrentWeather} from '../weather/CurrentWeather';
 import {Weather} from '../weather/Weather';
 import {OpenWeatherService} from './open-weather.service';
 import {SearchHistoryService} from './search-history.service';
+import {CollapsibleDirective} from '../common/collapsible.directive';
 
 @Component({
     templateUrl: 'app/location/location-detail.component.html',
-    directives: [ROUTER_DIRECTIVES ]
+    directives: [ROUTER_DIRECTIVES, CollapsibleDirective ]
 })
 export class LocationDetailComponent implements OnInit {
     locationName: string;
