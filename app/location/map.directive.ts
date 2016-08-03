@@ -31,7 +31,7 @@ export class Map {
 					});
 					
 					// Enable moving the marker
-                    google.maps.event.addListener(marker, "dragend", this.onDragged);
+                    google.maps.event.addListener(marker, "dragend", this.onDragged.bind(this));
         });
     }
 

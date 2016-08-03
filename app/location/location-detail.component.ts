@@ -1,4 +1,4 @@
-import { Component, OnInit } from 'angular2/core';
+import { Component, OnInit, NgZone  } from 'angular2/core';
 import {NgClass } from 'angular2/common';
 import { ROUTER_DIRECTIVES } from 'angular2/router';
 import { RouteParams, Router } from 'angular2/router';
@@ -27,15 +27,14 @@ export class LocationDetailComponent implements OnInit {
                 private _openWeatherService: OpenWeatherService,
                 private _searchHistory: SearchHistoryService,
                 private _locationEventService: LocationEventService,
-                private _map: Map) { // Inject Map only to ensure, this object is created before this component (due to event dependencies)
+                private _map: Map, // Inject Map only to ensure, this object is created before this component (due to event dependencies)
+                private _ngZone: NgZone) {
         this.locationName = this._routeParams.get('name');
-        this._locationEventService.locationRequested.subscribe(this.loadLocationDataWithCoordinates);
+        this._locationEventService.locationRequested.subscribe(this.loadLocationDataWithCoordinates.bind(this));
     }
 
     ngOnInit() : void {
-        this._openWeatherService.ByLocationName(this.locationName).subscribe(weather => {
-            this.loadCurrentWeather(weather);
-        });
+        this._openWeatherService.ByLocationName(this.locationName).subscribe(this.loadCurrentWeather.bind(this));
     }    
 
     lastSearchNames(): string[] {
@@ -47,19 +46,19 @@ export class LocationDetailComponent implements OnInit {
     }
 
     loadLocationDataWithId(id: number): void {
-        this._openWeatherService.ById(id).subscribe(weather => {
-            this.loadCurrentWeather(weather);
-        });
+        this._openWeatherService.ById(id).subscribe(this.loadCurrentWeather.bind(this));
     }
 
     loadLocationDataWithCoordinates(event, latitude : number, longitude : number) : void {
-        this._openWeatherService.ByCoordinates(latitude, longitude).subscribe(weather => {
-            this.loadCurrentWeather(weather);
+        this._ngZone.run(() => {
+            this._openWeatherService.ByCoordinates(event[0], event[1]).subscribe(this.loadCurrentWeather.bind(this));
         });
+        
     }    
 
     loadCurrentWeather(weather: any): void {
             let temp = new CurrentWeather(weather);
+            this.locationName = temp.name;
             this.currentWeather = temp;
             this.flagIcon = "flag-icon flag-icon-" + this.currentWeather.country;//weather['sys'].country;
 
