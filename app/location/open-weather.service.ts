@@ -3,14 +3,16 @@ import {SearchHistoryService} from './search-history.service';
 import { Injectable } from 'angular2/core';
 import { Http, Response} from 'angular2/http';
 import { Observable } from 'rxjs/Observable';
+import {LocationEventService} from './location-event.service';
 
 @Injectable()
 export class OpenWeatherService {
-    private apiKey = "15185ba4fcaa79b6600788874db6ca0a";
+    private apiKey = "15185ba4fcaa79b6600788874db6ca0a"; //"15185ba4fcaa79b6600788874db6ca0a";
 
     // TODO SW: using typed objects with interface instead of any.
     constructor(private _http: Http, 
-                private _searchHistoryService: SearchHistoryService) {
+                private _searchHistoryService: SearchHistoryService,
+                private _locationEventService: LocationEventService) {
 
     }
 
@@ -18,21 +20,33 @@ export class OpenWeatherService {
      * Gets the current weather by location name.
      */
     ByLocationName(locationName: string) : Observable<any> {
-        return this.getCurrentWeather("http://api.openweathermap.org/data/2.5/weather?q=" + locationName + "&APPID=" + this.apiKey);
+        return this.getCurrentWeather("http://api.openweathermap.org/data/2.5/weather?q=" + locationName + "&APPID=" + this.apiKey)                   
+                .do(response => {
+                       let weather = new CurrentWeather(response);
+                       this._locationEventService.NotifyNewLocationFetched(weather);
+                    });
     }
 
     /**
      * Gets the current weather by specific id.
      */
     ById(id: number) : Observable<any> {
-        return this.getCurrentWeather("http://api.openweathermap.org/data/2.5/weather?id=" + id + "&APPID=" + this.apiKey);
+        return this.getCurrentWeather("http://api.openweathermap.org/data/2.5/weather?id=" + id + "&APPID=" + this.apiKey)                   
+                .do(response => {
+                       let weather = new CurrentWeather(response);
+                       this._locationEventService.NotifyNewLocationFetched(weather);
+                    });
     }    
 
     /**
      * Gets the current weather by coordinates.
      */
     ByCoordinates(latitude: number, longitude: number) : Observable<any> {
-        return this.getCurrentWeather("http://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&APPID=" + this.apiKey);
+        return this.getCurrentWeather("http://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&APPID=" + this.apiKey)                   
+                .do(response => {
+                       let weather = new CurrentWeather(response);
+                       this._locationEventService.NotifyNewLocationFetched(weather);
+                    });
     }    
 
     /**
@@ -46,6 +60,7 @@ export class OpenWeatherService {
         return this._http.get(resourceUri)
                    .map(response => response.json())
                    .do(response => this._searchHistoryService.AddSearch(response.name))
+
                    .catch(this.handleErrors);
     } 
 

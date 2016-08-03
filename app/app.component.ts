@@ -10,6 +10,7 @@ import {SearchHistoryService} from './location/search-history.service';
 import {HTTP_PROVIDERS} from 'angular2/http';
 import 'rxjs/Rx'; // only load library
 import {ROUTER_PROVIDERS, RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
+import {LocationEventService} from './location/location-event.service';
 
 @Component({
     selector: 'pm-app',
@@ -30,7 +31,7 @@ import {ROUTER_PROVIDERS, RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router'
 
     </div>`,
     directives: [  ROUTER_DIRECTIVES ],
-    providers: [ ProductDataService, OpenWeatherService, HTTP_PROVIDERS, ROUTER_PROVIDERS, SearchHistoryService ]
+    providers: [ ProductDataService, OpenWeatherService, HTTP_PROVIDERS, ROUTER_PROVIDERS, SearchHistoryService, LocationEventService ]
 })
 @RouteConfig([
     { path: '/welcome', name: 'Welcome', component: WelcomeComponent, useAsDefault: true },

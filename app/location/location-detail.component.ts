@@ -7,10 +7,13 @@ import {Weather} from '../weather/Weather';
 import {OpenWeatherService} from './open-weather.service';
 import {SearchHistoryService} from './search-history.service';
 import {CollapsibleDirective} from '../common/collapsible.directive';
+import {Map} from './map.directive';
+import {LocationEventService} from './location-event.service';
 
 @Component({
     templateUrl: 'app/location/location-detail.component.html',
-    directives: [ROUTER_DIRECTIVES, CollapsibleDirective ]
+    directives: [ROUTER_DIRECTIVES, CollapsibleDirective, Map ],
+    providers: [Map]
 })
 export class LocationDetailComponent implements OnInit {
     locationName: string;
@@ -22,8 +25,11 @@ export class LocationDetailComponent implements OnInit {
     constructor(private _routeParams: RouteParams,
                 private _router: Router,
                 private _openWeatherService: OpenWeatherService,
-                private _searchHistory: SearchHistoryService) {
+                private _searchHistory: SearchHistoryService,
+                private _locationEventService: LocationEventService,
+                private _map: Map) { // Inject Map only to ensure, this object is created before this component (due to event dependencies)
         this.locationName = this._routeParams.get('name');
+        this._locationEventService.locationRequested.subscribe(this.loadLocationDataWithCoordinates);
     }
 
     ngOnInit() : void {
@@ -45,6 +51,12 @@ export class LocationDetailComponent implements OnInit {
             this.loadCurrentWeather(weather);
         });
     }
+
+    loadLocationDataWithCoordinates(event, latitude : number, longitude : number) : void {
+        this._openWeatherService.ByCoordinates(latitude, longitude).subscribe(weather => {
+            this.loadCurrentWeather(weather);
+        });
+    }    
 
     loadCurrentWeather(weather: any): void {
             let temp = new CurrentWeather(weather);
